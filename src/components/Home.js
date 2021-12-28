@@ -21,7 +21,7 @@ const Home = (props) => {
   let trendings = [];
 
   useEffect(() => {
-    onSnapshot(collection(db, "movies"), (snapshot) => {
+    const unsubscribe = onSnapshot(collection(db, "movies"), (snapshot) => {
       snapshot.docs.map((doc) => {
         switch (doc.data().type) {
           case "recommend":
@@ -50,6 +50,10 @@ const Home = (props) => {
         })
       );
     });
+
+    return () => {
+      unsubscribe();
+    };
   }, [userName]);
 
   return (
